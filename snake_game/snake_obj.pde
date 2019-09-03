@@ -44,7 +44,7 @@ class Snake {
     
     if (this.isEat()) {
       this.score(1);
-      this.eat();
+      this.grow();
       food.respawn();
     }
     
@@ -171,16 +171,18 @@ class Snake {
   
   
   boolean isEat() {
-    if (hX == food.x && hY == food.y) {
+    if (food.checkMonch(this.hX,this.hY)) {
       return true;
+    } else {
+      return false;
     }
-    return false;
+    
   }
   
   
   
   //FOOD EATEN FUNCION ------------------------------------------------------
-  void eat() {
+  void grow() {
     Segment seg = new Segment();
     body = (Segment[])append(body, seg);
     l = body.length;

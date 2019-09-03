@@ -21,7 +21,7 @@ void setup() {
   sqN = floor(width/sqL);
   inD = floor(sqN/2)-floor(gameSize/2)+1;
   outD = inD + gameSize;
-  food = new Food();
+  food = new Food(2);
   highScore = 0;
 }
 

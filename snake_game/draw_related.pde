@@ -3,7 +3,6 @@ void drawGrid() {
   rect(0,0,width,height);
   for (int i = inD; i < outD+1; i++ ) {
     //line(i*sqL,inD*sqL,i*sqL, (outD)*sqL);
-    
     //text(i-inD+1,i*sqL,(inD+1)*sqL);
     //line(inD*sqL, i*sqL, (outD)*sqL, i*sqL);
   }

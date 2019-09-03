@@ -1,23 +1,27 @@
 //SNAKECLASSSNAKECLASSSNAKECLASS-----------------------------------------------------------------
 class Snake {
   Segment[] body;
+  int l;
   char dir;
   Boolean jt;
-  int hX, hY, hI, oldheadPos;
-  int l;
+  
   int score;
   
-  
+  int hX, hY, hI, oldheadPos;
+  int tailX, tailY;
+
   
   Snake(int startL) {
     body = new Segment[startL];
-    score = 0;
     l = body.length;
     dir = 'd';
+    
+    score = 0;
+    
+    
     for (int i = 0; i < l; i++) {
       body[i] = new Segment();
       body[i].x -= i;
-      //body[i].show();
     }
     
     body[l-1].last = true;
@@ -35,6 +39,48 @@ class Snake {
   
   //CYCLE OF EVENTS FOR SNAKE TO UPDATE ---------------------------------
   void update() {
+    
+    moveBody();
+    
+    if (this.isEat()) {
+      this.score(1);
+      this.eat();
+      food.respawn();
+    }
+    
+    if (isOnSelf()) {
+      gameSt = -1;
+    }
+    
+    if (isOut()) {
+      gameSt = -1;
+    }
+    
+    
+  }
+  
+  
+  //SELF INTERSECTION CHECKER ----------------------------------------------
+  boolean isOnSelf() {
+    for (int i = 0; i < l; i++) {
+      if (hI != i && hX == body[i].x && hY == body[i].y) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  
+  boolean isOut() {
+    if (this.hX < inD || this.hX > outD-1 || this.hY < inD || this.hY > outD-1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  
+  void moveBody() {
     delay(200);
     for (int i = 0; i < l; i++) {
       if (body[i].last) {
@@ -72,44 +118,6 @@ class Snake {
       }
     }
     jt = false;
-    if (this.isEat()) {
-      score += 1;
-      if (this.score > highScore) {
-        highScore = this.score;
-      }
-      this.eat();
-      food.respawn();
-    }
-    if (isOnSelf()) {
-      gameSt = -1;
-    }
-    if (isOut()) {
-      gameSt = -1;
-    }
-    
-    
-  }
-  
-  //SELF INTERSECTION CHECKER ----------------------------------------------
-  boolean isOnSelf() {
-    
-    for (int i = 0; i < l; i++) {
-      
-      if (hI != i && hX == body[i].x && hY == body[i].y) {
-        
-        return true;
-      }
-    }
-    return false;
-  }
-  
-  
-  boolean isOut() {
-    if (this.hX < inD || this.hX > outD || this.hY <inD || this.hY > outD) {
-      return true;
-    } else {
-      return false;
-    }
   }
   
   
@@ -143,22 +151,34 @@ class Snake {
     jt = true;
   }
   
-
+  void score(int i) {
+    this.score += i;
+    if (this.score > highScore) {
+      highScore = this.score;
+    }
+  }
+  
+  
   //DISPALY SNAKE ---------------------------------------------------------
   void show() {
     for (int i = 0; i < body.length; i++) {
       body[i].show(i);
     }
     body[hI].headShow();
+    scoreDraw();
   }
   
+  
+  
   boolean isEat() {
-      if (hX == food.x && hY == food.y) {
-        return true;
-      }
-      return false;
+    if (hX == food.x && hY == food.y) {
+      return true;
     }
-    
+    return false;
+  }
+  
+  
+  
   //FOOD EATEN FUNCION ------------------------------------------------------
   void eat() {
     Segment seg = new Segment();
@@ -182,8 +202,9 @@ class Snake {
       body[l-2].last = false;
       body[l-1].last = true;
     }
-    
   }
+  
+  
   
   //SEGMENT CLASS ----------------------s-------------------------------------
   class Segment {
@@ -208,7 +229,6 @@ class Snake {
       //text(j, this.x*sqL,this.y*sqL);
       rect(this.x*sqL,this.y*sqL,sqL,sqL);
     }
-    
   }
   
   void scoreDraw() {

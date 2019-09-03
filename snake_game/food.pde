@@ -15,12 +15,11 @@ class Food {
   void respawn() {
     this.x = int(random(inD,outD));
     this.y = int(random(inD,outD));
+    
     for (int i = 0; i < snake.l; i++) {
       if (snake.body[i].x == this.x && snake.body[i].y == this.y) {
         this.respawn();
       }
     }
   }
-  
-  
 }

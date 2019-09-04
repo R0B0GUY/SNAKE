@@ -12,12 +12,12 @@ int sqL = 20;
 int sqN;
 int inD, outD;
 
-Snake snake;
+Snakes snakes;
 Food food;
 
 void setup() {
   frameRate(20);
-  snake = new Snake(3);
+  snakes = new Snakes(2);
   sqN = floor(width/sqL);
   inD = floor(sqN/2)-floor(gameSize/2)+1;
   outD = inD + gameSize;
@@ -30,7 +30,7 @@ void setup() {
 void keyPressed() {
   //println(key);
   controls(key);
-  snake.move(key);
+  snakes.move(key);
   
 }
 
@@ -42,9 +42,9 @@ void draw() {
   food.show();
   
   if (gameSt == 1) {
-    snake.update();
+    snakes.update();
   }
-  snake.show();
+  snakes.show();
   
   highScoreDraw();
   

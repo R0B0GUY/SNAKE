@@ -23,7 +23,7 @@ void controls(char kee) {
   if (kee == 'h') {
     gameSt *= -1;
   } else if (kee == 'r') {
-    snake.restart();
+    snakes.restart();
     food.respawn();
   }
     

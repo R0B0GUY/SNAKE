@@ -1,12 +1,54 @@
 class Snakes {
   Snake[] lizards;
+  
   Snakes(int s) {
     lizards = new Snake[s];
-    
+    // need to init snakes in different locs
     for (int i = 0; i < s; i++) {
       lizards[i] = new Snake(3);
     }
   }
+  //move snakes also add input for other snake
+  void move(char kee) {
+    char swap;
+    if (kee == 'a' || kee == 's' || kee == 'd' || kee == 'w') {
+      lizards[0].move(kee);
+    } else if (kee == 'j' || kee == 'k' || kee == 'l' || kee == 'i') {
+      switch (kee) {
+        case 'j' :
+          lizards[1].move('a');
+          break;
+        case 'k' :
+          lizards[1].move('s');
+          break;
+        case 'l' :
+          lizards[1].move('d');
+          break;
+        case 'i' :
+          lizards[1].move('w');
+          break;
+      }
+    }
+  }
+  
+  void restart() {
+    
+  }
+  
+  //update  all snakes based on their next dir
+  void update() {
+    for (Snake s : lizards) {
+      s.update();
+    }
+  }
+  
+  //draw both snakes
+  void show() {
+    for (Snake s : lizards) {
+      s.show();
+    }
+  }
+  
   //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
   //SNAKECLASSSNAKECLASSSNAKECLASS-----------------------------------
   class Snake {

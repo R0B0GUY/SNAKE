@@ -18,7 +18,7 @@ void pauseDraw() {
   rect(220,220,20,60);
   rect(260,220,20,60);
 }
-
+//Game controls for h4x0Rs
 void controls(char kee) {
   if (kee == 'h') {
     gameSt *= -1;

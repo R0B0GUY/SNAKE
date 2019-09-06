@@ -1,16 +1,23 @@
 class Snakes {
+  //array of all snakes in play
   Snake[] lizards;
   
+  //init snakes by specifying how many
   Snakes(int s) {
     lizards = new Snake[s];
     // need to init snakes in different locs
     for (int i = 0; i < s; i++) {
       lizards[i] = new Snake(3);
+      //translate each subsequent snake down one after the first
+      lizards[i].translate(0,i);
     }
   }
+  
+  
+  
   //move snakes also add input for other snake
   void move(char kee) {
-    char swap;
+    //char swap;
     if (kee == 'a' || kee == 's' || kee == 'd' || kee == 'w') {
       lizards[0].move(kee);
     } else if (kee == 'j' || kee == 'k' || kee == 'l' || kee == 'i') {
@@ -31,8 +38,13 @@ class Snakes {
     }
   }
   
+  //reset game with both snakes renewed
   void restart() {
-    
+    for (Snake s : lizards) {
+      s.resetSnake(3);
+      
+    }
+    gameSt = 1;
   }
   
   //update  all snakes based on their next dir
@@ -84,11 +96,25 @@ class Snakes {
       hI = 0;
     }
     
-    void resetSnake() {
-      /*
-      in here the particular snake that we are calling this method of must be reset back to the priginal size
-      and put into a location
-      */
+    void resetSnake(int startL) {
+      body = new Segment[startL];
+      l = body.length;
+      dir = 'd';
+      
+      score = 0;
+      
+      
+      for (int i = 0; i < l; i++) {
+        body[i] = new Segment();
+        body[i].x -= i;
+      }
+      
+      body[l-1].last = true;
+      jt = false;
+      
+      hX = body[0].x;
+      hY = body[0].y;
+      hI = 0;
     }
     
     //CYCLE OF EVENTS FOR SNAKE TO UPDATE ---------------------------------
@@ -107,7 +133,7 @@ class Snakes {
       }
       
       if (isOut()) {
-        gameSt = -1;
+        resetSnake(3);
       }
       
       
@@ -233,7 +259,14 @@ class Snakes {
       
     }
     
+    //TRANSLATE SNAKE FUNCION -------------------------------------------------
     
+    void translate(int x, int y) {
+      for (Segment s : body) {
+        s.x += x;
+        s.y += y;
+      }
+    }
     
     //FOOD EATEN FUNCION ------------------------------------------------------
     void grow() {
@@ -262,7 +295,7 @@ class Snakes {
     
     
     
-    //SEGMENT CLASS ----------------------s-------------------------------------
+    //SEGMENT CLASS ------------------------------------------------------------
     class Segment {
       int x,y;
       int lx,ly;

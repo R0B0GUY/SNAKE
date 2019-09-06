@@ -48,13 +48,13 @@ class Food {
       y = int(random(inD,outD));
       eaten = false;
       //need to fix this spawn of apples part to not spawn
-      /*for (Snakes.Snake snake : Snakes.lizards) {
+      for (Snakes.Snake snake : snakes.lizards) {
         for (int i = 0; i < snake.l; i++) {
           if (snake.body[i].x == this.x && snake.body[i].y == this.y) {
             this.respawn();
           }
         }
-      }*/
+      }
     }
     
     void show() {
@@ -65,14 +65,15 @@ class Food {
     void respawn() {
       this.x = int(random(inD,outD));
       this.y = int(random(inD,outD));
-      
-      /*for (int i = 0; i < snake.l; i++) {
-        if (snake.body[i].x == this.x && snake.body[i].y == this.y) {
-          this.respawn();
+      for (Snakes.Snake snake : snakes.lizards) {
+        for (int i = 0; i < snake.l; i++) {
+          if (snake.body[i].x == this.x && snake.body[i].y == this.y) {
+            this.respawn();
+          }
+          
+          this.eaten = false;
         }
-        
-        this.eaten = false;
-      }*/
+      }
     }
   }
 }

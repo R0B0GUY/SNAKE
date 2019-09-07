@@ -7,15 +7,16 @@ The game state determines what part of the game code is run
 -1 means the game is paused and the puse draw runs
 1 the game is running normally
 */
+int gameMode = 2;
 int gameSt = 1;
 
 
 int highScore;
 
 //this is the number of squares across of the game
-int gameSize = 20;
+int gameSize = 40;
 //this is the pixel length of each square
-int sqL = 20;
+int sqL = 10;
 
 //this is the number of squares that will fit onto the screen going across
 int sqN;
@@ -37,7 +38,7 @@ void setup() {
     
     
   //INIT snakes group with 2 snakes; does not work with 1 snake ATM lol
-  snakes = new Snakes(2);
+  snakes = new Snakes(gameMode);
   
   //INIT square Num
   sqN = floor(width/sqL);
@@ -46,7 +47,7 @@ void setup() {
   //INIT outside Distance
   outD = inD + gameSize;
   //INIT food group with 2 food
-  food = new Food(2);
+  food = new Food(20);
   
   highScore = 0;
 }
@@ -74,6 +75,6 @@ void draw() {
   
   
   if (gameSt == -1) {
-    pauseDraw();
+    //pauseDraw();
   }
 }

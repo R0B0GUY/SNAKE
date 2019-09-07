@@ -7,9 +7,9 @@ class Snakes {
     lizards = new Snake[s];
     // need to init snakes in different locs
     for (int i = 0; i < s; i++) {
-      lizards[i] = new Snake(3);
+      lizards[i] = new Snake(1);
       //translate each subsequent snake down one after the first
-      lizards[i].translate(0,i);
+      lizards[i].translate(0,i+6);
     }
   }
   
@@ -20,7 +20,7 @@ class Snakes {
     //char swap;
     if (kee == 'a' || kee == 's' || kee == 'd' || kee == 'w') {
       lizards[0].move(kee);
-    } else if (kee == 'j' || kee == 'k' || kee == 'l' || kee == 'i') {
+    } else if (kee == 'j' || kee == 'k' || kee == 'l' || kee == 'i' && gameMode == 2) {
       switch (kee) {
         case 'j' :
           lizards[1].move('a');
@@ -52,6 +52,9 @@ class Snakes {
     for (Snake s : lizards) {
       s.update();
     }
+    if (isOnSnake()) {
+      gameSt *= -1;
+    }
   }
   
   //draw both snakes
@@ -60,6 +63,24 @@ class Snakes {
       s.show();
     }
   }
+  
+  boolean isOnSnake() {
+      for (int s = 0; s < lizards.length; s++) {
+        for (int i = 0; i < lizards[s].l; i++) {
+          if (lizards[s].hI != i && lizards[s].hX == lizards[s].body[i].x && lizards[s].hY == lizards[s].body[i].y) {
+            return true;
+          }
+          for (int g = 0; g < lizards.length; g++) {
+            for (int j = 0; j < lizards[g].body.length; j++) {
+              if (s != g && lizards[s].hX == lizards[g].body[j].x && lizards[s].hY == lizards[g].body[j].y) {
+                return true;
+              }
+            }
+          }
+        }
+      }
+      return false;
+    }
   
   //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
   //SNAKECLASSSNAKECLASSSNAKECLASS-----------------------------------
@@ -128,9 +149,7 @@ class Snakes {
         food.respawn();
       }
       
-      if (isOnSelf()) {
-        gameSt = -1;
-      }
+      
       
       if (isOut()) {
         resetSnake(3);
@@ -139,16 +158,8 @@ class Snakes {
       
     }
     
-    
     //SELF INTERSECTION CHECKER ----------------------------------------------
-    boolean isOnSelf() {
-      for (int i = 0; i < l; i++) {
-        if (hI != i && hX == body[i].x && hY == body[i].y) {
-          return true;
-        }
-      }
-      return false;
-    }
+    
     
     
     boolean isOut() {
@@ -161,7 +172,7 @@ class Snakes {
     
     
     void moveBody() {
-      delay(200);
+      delay(100);
       for (int i = 0; i < l; i++) {
         if (body[i].last) {
           body[i].last = false;

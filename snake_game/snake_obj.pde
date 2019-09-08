@@ -28,7 +28,7 @@ class Snakes {
       step(sp(2)+"translate on snake: " + i + " has finished");
       println(sp(2)+"Snake " + i + " new Head X: " + lizards[i].hX + " new Head Y: " + lizards[i].hY);
     }
-    printAllSegCoords();
+    //printAllSegCoords();
   }
   
   //update  all snakes based on their next dir

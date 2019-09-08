@@ -1,16 +1,47 @@
 class Snakes {
   //array of all snakes in play
   Snake[] lizards;
+  int snakeNum, snakeLen;
+  
   
   //init snakes by specifying how many
-  Snakes(int s) {
+  Snakes(int s, int snakeL) {
+    step(sp(1)+"Snake inner INIT started");
+
+    snakeNum = s;
+    snakeLen = snakeL;
     lizards = new Snake[s];
     // need to init snakes in different locs
     for (int i = 0; i < s; i++) {
-      lizards[i] = new Snake(1);
+      step("INIT snake: " + i + " starting");
+      lizards[i] = new Snake(snakeLen);
+      step(sp(2)+"Length of lizards[" + i + "] array: " + lizards[i].l);
       //translate each subsequent snake down one after the first
-      lizards[i].translate(0,i+6);
     }
+    step(sp(1)+"all snakes INITed");
+    //printAllSegCoords();
+    for (int i = 0; i < snakeNum; i++) {
+      step(sp(2)+"Snake translate started; translating snake: " + i);
+      stepNC(sp(2)+"lizards translation called at: " + stepCount);
+      stepNC(sp(2)+"Snake " + i + " Head X: " + lizards[i].hX + " Head Y: " + lizards[i].hY);
+      lizards[i].translateSnake(0, 3*i);
+      step(sp(2)+"translate on snake: " + i + " has finished");
+      stepNC(sp(2)+"Snake " + i + " new Head X: " + lizards[i].hX + " new Head Y: " + lizards[i].hY);
+    }
+    //printAllSegCoords();
+  }
+  
+  //update  all snakes based on their next dir
+  void update() {
+    step("all snake update is called");
+    for (Snake s : lizards) {
+      s.update();
+    }
+    if (isOnSnake()) {
+      step("snake on snake detected switching game state");
+      gameSt = -1;
+    }
+    step("update finished");
   }
   
   
@@ -39,24 +70,19 @@ class Snakes {
   }
   
   //reset game with both snakes renewed
-  void restart() {
+  void restartAll() {
+    step("restart all has been called");
     for (Snake s : lizards) {
-      s.resetSnake(3);
-      
+      stepNC("restartAll called at: " + frameCount);
+      s.resetSnake(snakeLen);
+      for (int i = 0; i < snakeNum; i++) {
+        lizards[i].translateSnake(0, int(random(-4,4)));
+      }
     }
     gameSt = 1;
   }
   
-  //update  all snakes based on their next dir
-  void update() {
-    for (Snake s : lizards) {
-      s.update();
-    }
-    if (isOnSnake()) {
-      gameSt *= -1;
-    }
-  }
-  
+
   //draw both snakes
   void show() {
     for (Snake s : lizards) {
@@ -65,13 +91,19 @@ class Snakes {
   }
   
   boolean isOnSnake() {
+    step("is on snake has been called");
+    //print snake segment locations
+    
+    
       for (int s = 0; s < lizards.length; s++) {
         for (int i = 0; i < lizards[s].l; i++) {
           if (lizards[s].hI != i && lizards[s].hX == lizards[s].body[i].x && lizards[s].hY == lizards[s].body[i].y) {
             return true;
           }
+          
           for (int g = 0; g < lizards.length; g++) {
-            for (int j = 0; j < lizards[g].body.length; j++) {
+            for (int j = 0; j < lizards[g].l
+            ; j++) {
               if (s != g && lizards[s].hX == lizards[g].body[j].x && lizards[s].hY == lizards[g].body[j].y) {
                 return true;
               }
@@ -95,8 +127,9 @@ class Snakes {
     int hX, hY, hI, oldheadPos;
     int tailX, tailY;
   
-    
+    //{}{}{}{}{}{}{}{}{}{}{}{}XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX{}{}{}{}{}{}{}{}{}{}{}{}{}{} FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS!
     Snake(int startL) {
+      step(sp(3)+"individual snake INIT started");
       body = new Segment[startL];
       l = body.length;
       dir = 'd';
@@ -105,6 +138,7 @@ class Snakes {
       
       
       for (int i = 0; i < l; i++) {
+        step(sp(4)+"running segment init for " + i +"'th segment");
         body[i] = new Segment();
         body[i].x -= i;
       }
@@ -115,8 +149,10 @@ class Snakes {
       hX = body[0].x;
       hY = body[0].y;
       hI = 0;
+      step(sp(3)+"Individ snake INIT finished.");
     }
     
+    //{}{}{}{}{}{}{}{}{}{}{}{}XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX{}{}{}{}{}{}{}{}{}{}{}{}{}{} FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS! FIX THIS!
     void resetSnake(int startL) {
       body = new Segment[startL];
       l = body.length;
@@ -140,19 +176,21 @@ class Snakes {
     
     //CYCLE OF EVENTS FOR SNAKE TO UPDATE ---------------------------------
     void update() {
-      
+      step("Individual snake update is called; Hbody x " + this.body[hI].x + ", Hbody y " + this.body[hI].y);
       moveBody();
-      
+      step("moveBody() has ran; NEW HEAD: Hbody x " + this.body[hI].x + ", Hbody y " + this.body[hI].y);
       if (this.isEat()) {
+        step(sp(2)+"*****iseat called");
         this.score(1);
         this.grow();
         food.respawn();
       }
       
       
-      
+      step("about to check is out");
       if (isOut()) {
-        resetSnake(3);
+        step("is out triggered");
+        resetSnake(snakeLen);
       }
       
       
@@ -163,7 +201,7 @@ class Snakes {
     
     
     boolean isOut() {
-      if (this.hX < inD || this.hX > outD-1 || this.hY < inD || this.hY > outD-1) {
+      if (this.hX == inD -1 || this.hX == outD || this.hY == inD-1 || this.hY == outD) {
         return true;
       } else {
         return false;
@@ -173,6 +211,7 @@ class Snakes {
     
     void moveBody() {
       delay(100);
+      step("moving snake started");
       for (int i = 0; i < l; i++) {
         if (body[i].last) {
           body[i].last = false;
@@ -203,12 +242,13 @@ class Snakes {
               break;
           }
           
-          hX = body[i].x;
-          hY = body[i].y;
+          hX = body[hI].x;
+          hY = body[hI].y;
           break;
         }
       }
       jt = false;
+      step("moving snake finished");
     }
     
     
@@ -272,11 +312,18 @@ class Snakes {
     
     //TRANSLATE SNAKE FUNCION -------------------------------------------------
     
-    void translate(int x, int y) {
-      for (Segment s : body) {
+    void translateSnake(int x, int y) {
+      stepNC(sp(3)+"Snake translating");
+      step(sp(3)+"The input of x and y for this snake are: " + x + " and " + y);
+      for (Segment s : this.body) {
+        stepNC(sp(4)+"Snake sement coords: "  + " Head X: " + s.x + " Head Y: " + s.y );
         s.x += x;
         s.y += y;
+        
+        stepNC(sp(4)+"new Snake sement coords"  + " Head X: " + s.x + " Head Y: " + s.y + "\n");
       }
+        hX = this.body[hI].x;
+        hY = this.body[hI].y;
     }
     
     //FOOD EATEN FUNCION ------------------------------------------------------
@@ -308,13 +355,16 @@ class Snakes {
     
     //SEGMENT CLASS ------------------------------------------------------------
     class Segment {
+      
       int x,y;
       int lx,ly;
       Boolean last = false;
       
       Segment() {
+        step(sp(5)+"segment INIT started");
         x = inD + 4;
         y = inD+8;
+        step(sp(5)+"segment coords set to: ("+x+", "+y+")");
       }
       
       //show snake head method -----------------------

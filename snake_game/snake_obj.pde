@@ -22,11 +22,11 @@ class Snakes {
     //printAllSegCoords();
     for (int i = 0; i < snakeNum; i++) {
       step(sp(2)+"Snake translate started; translating snake: " + i);
-      println(sp(2)+"lizards translation called at: " + stepCount);
-      println(sp(2)+"Snake " + i + " Head X: " + lizards[i].hX + " Head Y: " + lizards[i].hY);
+      stepNC(sp(2)+"lizards translation called at: " + stepCount);
+      stepNC(sp(2)+"Snake " + i + " Head X: " + lizards[i].hX + " Head Y: " + lizards[i].hY);
       lizards[i].translateSnake(0, 3*i);
       step(sp(2)+"translate on snake: " + i + " has finished");
-      println(sp(2)+"Snake " + i + " new Head X: " + lizards[i].hX + " new Head Y: " + lizards[i].hY);
+      stepNC(sp(2)+"Snake " + i + " new Head X: " + lizards[i].hX + " new Head Y: " + lizards[i].hY);
     }
     //printAllSegCoords();
   }
@@ -73,7 +73,7 @@ class Snakes {
   void restartAll() {
     step("restart all has been called");
     for (Snake s : lizards) {
-      println("restartAll called at: " + frameCount);
+      stepNC("restartAll called at: " + frameCount);
       s.resetSnake(snakeLen);
       for (int i = 0; i < snakeNum; i++) {
         lizards[i].translateSnake(0, int(random(-4,4)));
@@ -93,7 +93,7 @@ class Snakes {
   boolean isOnSnake() {
     step("is on snake has been called");
     //print snake segment locations
-    printAllSegCoords();
+    
     
       for (int s = 0; s < lizards.length; s++) {
         for (int i = 0; i < lizards[s].l; i++) {
@@ -313,14 +313,14 @@ class Snakes {
     //TRANSLATE SNAKE FUNCION -------------------------------------------------
     
     void translateSnake(int x, int y) {
-      println(sp(3)+"Snake translating");
+      stepNC(sp(3)+"Snake translating");
       step(sp(3)+"The input of x and y for this snake are: " + x + " and " + y);
       for (Segment s : this.body) {
-        println(sp(4)+"Snake sement coords: "  + " Head X: " + s.x + " Head Y: " + s.y );
+        stepNC(sp(4)+"Snake sement coords: "  + " Head X: " + s.x + " Head Y: " + s.y );
         s.x += x;
         s.y += y;
         
-        println(sp(4)+"new Snake sement coords"  + " Head X: " + s.x + " Head Y: " + s.y + "\n");
+        stepNC(sp(4)+"new Snake sement coords"  + " Head X: " + s.x + " Head Y: " + s.y + "\n");
       }
         hX = this.body[hI].x;
         hY = this.body[hI].y;

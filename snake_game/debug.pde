@@ -1,5 +1,5 @@
 void step(String s) {
-  if (gameSt != -5) {
+  if (debug == 1) {
     stepCount ++;
     println(stepCount + ": " + s);
   }
@@ -7,6 +7,13 @@ void step(String s) {
 
 void step() {
   stepCount ++;
+}
+
+void stepNC(String s) {
+  if (debug == 1) {
+    
+    println(stepCount + ": " + s);
+  }
 }
 
 void printAllSegCoords() {

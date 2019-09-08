@@ -43,8 +43,7 @@ void setup() {
     frameRate(30);
     
     
-  //INIT snakes group with 2 snakes; does not work with 1 snake ATM lol
-  snakes = new Snakes(gameMode, startSnakeLenght);
+ 
   
   //INIT square Num
   sqN = floor(width/sqL);
@@ -53,6 +52,10 @@ void setup() {
   //INIT outside Distance
   outD = inD + gameSize;
   //INIT food group with 2 food
+  
+  
+   //INIT snakes group with 2 snakes; does not work with 1 snake ATM lol
+  snakes = new Snakes(gameMode, startSnakeLenght);
   food = new Food(20);
   
   highScore = 0;

@@ -180,14 +180,16 @@ class Snakes {
       moveBody();
       step("moveBody() has ran; NEW HEAD: Hbody x " + this.body[hI].x + ", Hbody y " + this.body[hI].y);
       if (this.isEat()) {
+        step(sp(2)+"*****iseat called");
         this.score(1);
         this.grow();
         food.respawn();
       }
       
       
-      
+      step("about to check is out");
       if (isOut()) {
+        step("is out triggered");
         resetSnake(snakeLen);
       }
       

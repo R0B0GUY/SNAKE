@@ -22,8 +22,8 @@ void pauseDraw() {
 void controls(char kee) {
   if (kee == 'h') {
     gameSt *= -1;
-  } else if (kee == 'r') {
-    snakes.restart();
+  } else if (kee == 'r' && gameSt == -1) {
+    //snakes.restart();
     food.respawn();
   }
     
@@ -31,6 +31,6 @@ void controls(char kee) {
 
 void highScoreDraw() {
   fill(255);
-  textSize(25);
-  text("HIGH SCORE: " + highScore, 3*sqL, 1*sqL);
+  textSize(3*sqL);
+  text("HIGH SCORE: " + highScore, (inD+0)*sqL, (outD+3)*sqL);
 }

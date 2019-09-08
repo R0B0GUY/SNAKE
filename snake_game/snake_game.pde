@@ -8,7 +8,12 @@ The game state determines what part of the game code is run
 1 the game is running normally
 */
 int gameMode = 2;
+int startSnakeLenght = 3;
 int gameSt = 1;
+
+//XXXXXX
+int stepCount = 0;
+//XXXXXX
 
 
 int highScore;
@@ -34,11 +39,12 @@ Snakes snakes;
 Food food;
 
 void setup() {
+  step("Variables INITed; starting setup()");
     frameRate(30);
     
     
   //INIT snakes group with 2 snakes; does not work with 1 snake ATM lol
-  snakes = new Snakes(gameMode);
+  snakes = new Snakes(gameMode, startSnakeLenght);
   
   //INIT square Num
   sqN = floor(width/sqL);
@@ -50,11 +56,14 @@ void setup() {
   food = new Food(20);
   
   highScore = 0;
+  
+  step("setup() done");
 }
 
 
 //KEYSSTROKE Listener------------------------------------
 void keyPressed() {
+  step("key pressed");
   controls(key);
   snakes.move(key);
 }
@@ -62,19 +71,23 @@ void keyPressed() {
 
 //MAIN DRAW LOOP------------------------------------------
 void draw() {
+  step("draw() started; gameSt = " + gameSt);
   background(169);
   drawGrid();
   food.show();
   
   if (gameSt == 1) {
+    step(sp(1)+"update about to be called on snakes gameSt == 1");
     snakes.update();
   }
   snakes.show();
+  step("snakes shown");
   
   highScoreDraw();
   
   
   if (gameSt == -1) {
-    //pauseDraw();
+    step("game paused; gameSt = -1");
+    pauseDraw();
   }
 }
